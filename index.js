@@ -35,7 +35,7 @@ const web = new WebClient(token);
 
 (async () => {
   try {
-    const expirationTime = parseInt(statusExpiration, 10) || 0;
+    const expirationTime = parseFloat(statusExpiration) || 0;
     const statusExpirationAdjusted = expirationTime
       ? Math.floor(Date.now() / 1000 + expirationTime * 60 * 60)
       : 0;
