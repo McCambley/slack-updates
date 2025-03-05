@@ -35,7 +35,7 @@ const web = new WebClient(token);
 
 (async () => {
   try {
-    const expirationTime = parseInt(statusExpiration, 10) || 0;
+    const expirationTime = parseFloat(statusExpiration) || 0;
     const statusExpirationAdjusted = expirationTime
       ? Math.floor(Date.now() / 1000 + expirationTime * 60 * 60)
       : 0;
@@ -47,8 +47,28 @@ const web = new WebClient(token);
         status_expiration: statusExpirationAdjusted,
       },
     });
+    let snoozeMinutes = 0;
+    // Calculate the number of minutes until tomorrow
+    const now = new Date();
+    const tomorrow = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate() + 1
+    );
+    tomorrow.setHours(0, 0, 0, 0);
+
+    const minutesUntilTomorrow = Math.floor(
+      (tomorrow.getTime() - now.getTime()) / 60000
+    );
+
     const snooze = await web.dnd.setSnooze({
-      num_minutes: parseInt(doNotDisturb) ? expirationTime * 60 : 0,
+      num_minutes: parseInt(doNotDisturb)
+        ? expirationTime
+          ? // Set expiration to end of status
+            expirationTime * 60
+          : // Set expiration to tomorrow
+            minutesUntilTomorrow
+        : 0,
       token,
     });
 
