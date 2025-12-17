@@ -72,9 +72,9 @@ const web = new WebClient(token);
       token,
     });
 
-    console.log("Status updated successfully:");
-    console.log(`  Text:  ${result.profile?.status_text}`);
-    console.log(`  Emoji: ${result.profile?.status_emoji}`);
+    console.log(`Status updated successfully @ ${new Date().toTimeString()}`);
+    console.log(`  Text:  ${result.profile?.status_text || "N/A"}`);
+    console.log(`  Emoji: ${result.profile?.status_emoji || "N/A"}`);
     console.log(`  Expiration time: ${result.profile?.status_expiration}`);
     console.log(`  Snooze duration: ${expirationTime * 60}`);
     console.log(`  Snooze enabled: ${snooze?.snooze_enabled}`);
